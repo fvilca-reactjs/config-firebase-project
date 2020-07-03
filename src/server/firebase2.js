@@ -1,0 +1,17 @@
+import app from 'firebase/app'
+import 'firebase/firestore'
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBIUiyIy68c1Xfbg3IuAPMgZJgcBeZXPDU",
+    authDomain: "yamaya-app.firebaseapp.com",
+    databaseURL: "https://yamaya-app.firebaseio.com",
+    projectId: "yamaya-app",
+    storageBucket: "yamaya-app.appspot.com",
+    messagingSenderId: "762714403319",
+    appId: "1:762714403319:web:380a52b6f5b84a60aabef2",
+    measurementId: "G-8ETCGMNMJG"
+};
+
+app.initializeApp(firebaseConfig)
+export const db = app.firestore();
+/********************************************************* */
