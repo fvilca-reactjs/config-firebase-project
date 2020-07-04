@@ -17,31 +17,35 @@
   color: #61dafb;
 }
 
-form{
+form {
   padding: 2px;
-  
 }
 
-input{
+input {
   padding: 6px;
-  color: white;
+  color: grey;
   background: transparent;
   border: none;
   border: 1px solid gray;
   border-radius: 5px;
   margin: 2px;
 }
-button{
+button {
   border: none;
   outline: none;
   border-radius: 5px;
   background: deeppink;
   width: 80px;
   height: 30px;
-  &:hover{
+  &:hover {
     background-color: rgb(131, 5, 180);
-    color: white
+    color: white;
   }
   transition: ease-in-out 0.5s;
-  
 }
+
+.user-form{
+  display: flex;
+  flex-direction: column;
+}
+

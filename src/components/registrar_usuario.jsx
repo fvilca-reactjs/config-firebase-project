@@ -1,57 +1,44 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import compose from 'recompose/compose';
-//import { db } from '../server/firebase2'
 import { consumerFirebase } from '../server/firebase'
+import { useForm } from 'react-hook-form'
+let countRender = 0;
 
-let countRender=0;
+const constraints = {
+    user_mail: { required: true },
+    user_name: { minLength: { value: 8 } }
+}
+
+const messages = {
+    user_mail: 'email is required',
+    user_name: '8 characters max'
+}
 
 function RegistrarUsuario(props) {
+    // [1] ====>
     countRender++;
-    console.log('*********** props:', props.firebase)
-    const [send, setSend] = useState(false)
-    const [data, setData] = useState({})
-
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-        const temp = {
-            name: document.getElementsByName('user_name').value,
-            lastname: document.getElementsByName('user_lastname').value,
-            mail: document.getElementsByName('user_mail').value,
-            password: document.getElementsByName('user_password').value
-        }
-        setData({...temp})
-        setSend(true)
-        /*
+    let { register, handleSubmit, errors } = useForm();
+    //  [2] ====>
+    const onSubmit = (data) => {
+        console.log(':', data)
         if (props.firebase.db)
-            props.firebase.db.collection('Users').add(temp)
-                .then(() => console.log('ok:'))
+            props.firebase.db.collection('Users').add(data)
+                .then((result) => console.log('ok:', result))
                 .catch(error => console.log(error));
-        setTimeout(() => {
-            setSend(false)
-            console.log('data:', data)
-        }, 4000);
-    */
-        console.log('data:', data)
     }
-
-
     return (
         <div>
-                <h1>{countRender}</h1>            
-                <input name='user_name' placeholder='Nombre' />
-                <input name='user_lastname' placeholder='Apellidos' />
-                <input name='user_mail' placeholder='Email' />
-                <input name='user_password' placeholder='password' />
+            <h1>Usar react Hook form {countRender}</h1>
+            <form onSubmit={handleSubmit(onSubmit)} className='user-form'>
+                <input name='user_name' placeholder='Nombre' ref={register(constraints.user_name)} />{errors.user_name && <span>{messages.user_name}</span>}
+                <input name='user_lastname' placeholder='Apellidos' ref={register} />
+                <input name='user_mail' placeholder='Email' ref={register(constraints.user_mail)} />{errors.user_mail && <span>{messages.user_mail}</span>}
+                <input name='user_password' placeholder='password' ref={register} />
                 <br />
-                <button onClick={handleSubmit}>{
-                    !send
-                        ? 'Enviar'
-                        : 'Enviando'
-                }</button>
-            
+                <button>send </button>
+            </form>
         </div>
     )
 }
-
 export default compose(consumerFirebase)(RegistrarUsuario)
 //export default RegistrarUsuario
