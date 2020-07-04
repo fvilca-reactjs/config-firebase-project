@@ -20,11 +20,22 @@ function RegistrarUsuario(props) {
     let { register, handleSubmit, errors } = useForm();
     //  [2] ====>
     const onSubmit = (data) => {
-        console.log(':', data)
-        if (props.firebase.db)
-            props.firebase.db.collection('Users').add(data)
-                .then((result) => console.log('ok:', result))
-                .catch(error => console.log(error));
+        props.firebase.auth
+            .createUserWithEmailAndPassword(data.user_mail, data.user_password)
+            .then(
+                result => {
+                    let final_user = { ...data, id: result.user.uid }
+                    props.firebase.db.collection('Users').add(final_user)
+                        .then(
+                            (result) =>
+                                console.log('ok:', result),
+                            props.history.push('/')
+                        )
+                        .catch(error => console.log(error));
+                }
+            )
+            .catch()
+
     }
     return (
         <div>

@@ -1,6 +1,7 @@
 import React, {createContext} from 'react'
 import app from '@firebase/app'
 import '@firebase/firestore'
+import '@firebase/auth'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBIUiyIy68c1Xfbg3IuAPMgZJgcBeZXPDU",
@@ -17,6 +18,7 @@ export  class  Firebase {
     constructor(){
         app.initializeApp(firebaseConfig)
         this.db = app.firestore();
+        this.auth = app.auth();
     }
 }
 
