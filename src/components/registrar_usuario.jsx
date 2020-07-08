@@ -1,6 +1,6 @@
-import React from 'react'
-import compose from 'recompose/compose';
-import { consumerFirebase } from '../server/firebase'
+import React, { useContext } from 'react'
+//import compose from 'recompose/compose';
+import { Firebase2 } from '../server/firebase2'
 import { useForm } from 'react-hook-form'
 let countRender = 0;
 
@@ -17,15 +17,16 @@ const messages = {
 function RegistrarUsuario(props) {
     // [1] ====>
     countRender++;
+    const firebase = useContext(Firebase2.Context)
     let { register, handleSubmit, errors } = useForm();
     //  [2] ====>
     const onSubmit = (data) => {
-        props.firebase.auth
+        firebase.auth
             .createUserWithEmailAndPassword(data.user_mail, data.user_password)
             .then(
                 result => {
                     let final_user = { ...data, id: result.user.uid }
-                    props.firebase.db.collection('Users').add(final_user)
+                    firebase.db.collection('Users').add(final_user)
                         .then(
                             (result) =>
                                 console.log('ok:', result),
@@ -51,5 +52,5 @@ function RegistrarUsuario(props) {
         </div>
     )
 }
-export default compose(consumerFirebase)(RegistrarUsuario)
-//export default RegistrarUsuario
+//export default compose(consumerFirebase)(RegistrarUsuario)
+export default RegistrarUsuario

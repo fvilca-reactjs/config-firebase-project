@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import compose from 'recompose/compose'
-import { consumerFirebase } from '../server/firebase'
+import React, { useState, useEffect, useContext } from 'react'
+//import compose from 'recompose/compose'
+import { Firebase2 } from '../server/firebase2'
 import { useForm } from 'react-hook-form'
-import {useHistory} from 'react-router-dom'
+import { useHistory} from 'react-router-dom'
 
 function Login(props) {
+    console.log('props:',props)
     // [state] ====>
-    console.log('\t firebase', props.firebase)
+    //console.log('\t firebase', props.firebase)
     let { register, handleSubmit } = useForm();
-    const [firebase, setFirebase] = useState()
+    const [firebaseIsReady, setFirebaseIsReady] = useState(false)
     let history = useHistory();
+    let firebase = useContext(Firebase2.Context)
 
     // [methods] ====>
     const onSubmit = (data) => {
@@ -22,11 +24,14 @@ function Login(props) {
             .catch( error => console.log('error:',error) )
     }
     useEffect(() => {
-        setFirebase(props.firebase)
-        console.log('useEffect')
+        firebase.isReady()
+        .then( result => setFirebaseIsReady(result) )
+        .catch()
+
     }, [])
     // [render] ====>
     return (
+        {firebaseIsReady}&&
         <div>
             <form onSubmit={handleSubmit(onSubmit)} className='user-form'>
                 <label>Ingrese e-mail:
@@ -40,5 +45,5 @@ function Login(props) {
         </div>
     )
 }
-
-export default compose(consumerFirebase)(Login)
+export default Login
+//export default compose(consumerFirebase)(Login)

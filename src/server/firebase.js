@@ -21,11 +21,8 @@ export  class  Firebase {
         this.auth = app.auth();
     }
 }
-
 /********************************************************* */
-
-
-export const FirebaseContext = createContext();
+/*export const FirebaseContext = createContext();
 
 export const consumerFirebase = Component => props => {
     return (
@@ -33,7 +30,4 @@ export const consumerFirebase = Component => props => {
         {firebase => <Component {...props} firebase={firebase} />}
     </FirebaseContext.Consumer>
     )
-}
-
-
-
+}*/

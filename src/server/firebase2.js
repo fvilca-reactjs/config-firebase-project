@@ -1,5 +1,7 @@
-import app from 'firebase/app'
-import 'firebase/firestore'
+import { createContext } from 'react'
+import app from '@firebase/app'
+import '@firebase/firestore'
+import '@firebase/auth'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBIUiyIy68c1Xfbg3IuAPMgZJgcBeZXPDU",
@@ -12,6 +14,39 @@ const firebaseConfig = {
     measurementId: "G-8ETCGMNMJG"
 };
 
-app.initializeApp(firebaseConfig)
-export const db = app.firestore();
-/********************************************************* */
+export class Firebase2 {
+    static Context = createContext();
+    static counter = 0;
+    constructor() {
+        this.instance = null;
+        this.app = app.initializeApp(firebaseConfig)
+        this.db = app.firestore()
+        this.auth = app.auth()
+    }
+    static getInstance = () => {
+        if (!this.instance) {
+            this.instance = new Firebase2()
+            this.counter++;
+        }
+        return this.instance
+    }
+    isReady = () => (new Promise(resolve => {
+        this.auth.onAuthStateChanged(resolve)
+    }))
+}
+
+
+const Firebase1 = {
+    data: () => ({
+        db: null,
+        auth: null
+    }),
+    init: () => {
+        app.initializeApp(firebaseConfig)
+            .db = app.fireStore()
+        this.auth = app.auth()
+    }
+}
+
+Object.freeze(Firebase1);
+export default Firebase1;
