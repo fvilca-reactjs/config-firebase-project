@@ -1,6 +1,17 @@
-import { SessionProvider } from "./store";
+export const initialState = {
+    usuario:{
+        nombre:'', 
+        apellido:'',
+        email:'',
+        telefono:'',
+        id:'',
+        foto:''
+    },
+    autenticado:false
+}
 
- const SessionReducer = (state, action) => {
+
+ const SessionReducer = (state=initialState, action) => {
     switch(action.type){
         case 'INICIAR_SESION':
         return{
@@ -17,11 +28,11 @@ import { SessionProvider } from "./store";
         case 'SALIR_SESION':
         return{
             ...state,
-            usuario: action.sesion,
+            usuario: action.nuevoUsuario,
             autenticado:action.autenticado
         }
         default:
             return state
     }
 }
-export default SessionProvider
+export default SessionReducer
