@@ -5,13 +5,11 @@ import './index.css';
 import App from './App';
 import { Firebase2 } from './server/firebase2'
 import { SessionProvider } from './session/store';
-import initialState from './session/initialState'
-import SessionReducer from './session/sessionReducer'
-
+import mainReducer from './session/allReducers'
 
 ReactDOM.render(
   <Firebase2.Context.Provider value={Firebase2.getInstance()} >
-    <SessionProvider initialState={initialState} reducer={SessionReducer}>
+    <SessionProvider initialState={{}} reducer={mainReducer}>
       <App />
     </SessionProvider>
   </Firebase2.Context.Provider>

@@ -9,6 +9,7 @@ export const SessionProvider = ({reducer,initialState, children}) =>(
     </SessionContext.Provider>
 )
 
+///export const useStateValue = () => useContext(SessionContext);
 
 /*export class Session {
     static Context = createContext();

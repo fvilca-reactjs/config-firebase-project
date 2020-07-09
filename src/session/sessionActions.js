@@ -1,4 +1,5 @@
-export const iniciarSession = (dispatch, email, password, firebase) => {
+export const iniciarSesion = (dispatch, email, password, firebase) => {
+
     return new Promise(
         (resolve, eject) => {
             firebase.auth
@@ -9,17 +10,20 @@ export const iniciarSession = (dispatch, email, password, firebase) => {
                         .doc(auth.user.uid)
                         .get()
                         .then(doc => {
+
                             const usuarioDB = doc.data();
                             dispatch({
                                 type: 'INICIAR_SESSION',
                                 sesion: usuarioDB,
                                 autenticado: true
-                            })
+                            });
+                            resolve({ status: true })
+                            console.log('TRUE')
                         })
                 })
-                .catch(
-                    error => console.log(error)
-                )
+                .catch(error => {
+                    resolve({ status: false, mensaje: error })
+                })
         }
     )
 }
@@ -52,7 +56,7 @@ export const crearUsuario = (dispatch, firebase, Usuario) => {
                         }
                         )
                         .catch(
-                            error=>console.log(error)
+                            error => console.log(error)
                         )
                 }
             )
@@ -62,23 +66,23 @@ export const crearUsuario = (dispatch, firebase, Usuario) => {
 
 export const salirSesion = (dispatch, firebase) => {
     return new Promise(
-        (resolve, eject)=>{
+        (resolve, eject) => {
             firebase.auth.signOut()
-            .then(
-                salir=> dispatch({
-                    type:"SALIR_SESION",
-                    nuevoUsuario:{
-                        nombre:'',
-                        apellido:'',
-                        email:'',
-                        foto:'',
-                        id:'',
-                        telefono:''
-                    },
-                    autenticado:false
-                }).
-                resolve()
-            )
+                .then(
+                    salir => dispatch({
+                        type: "SALIR_SESION",
+                        nuevoUsuario: {
+                            nombre: '',
+                            apellido: '',
+                            email: '',
+                            foto: '',
+                            id: '',
+                            telefono: ''
+                        },
+                        autenticado: false
+                    }).
+                        resolve()
+                )
         }
     )
 }
