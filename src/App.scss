@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: lightgray;
 }
 
 .App-header {
@@ -34,7 +35,8 @@ button {
   border: none;
   outline: none;
   border-radius: 5px;
-  background: deeppink;
+  background: black;
+  color: white;
   width: 80px;
   height: 30px;
   &:hover {
@@ -44,8 +46,16 @@ button {
   transition: ease-in-out 0.5s;
 }
 
-.user-form{
+.user-form {
   display: flex;
   flex-direction: column;
 }
 
+a {
+  background-color: mediumpurple;
+  color: white;
+  text-decoration: none;
+  margin: 20px 10px;
+  padding: 6px;
+  border: 2px solid white;
+}

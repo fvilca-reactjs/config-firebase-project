@@ -12,12 +12,12 @@ function App() {
   const firebase = useContext(Firebase2.Context);  //instanciando un contexto
   const [firebaseIsReady, setFirebaseIsReady] = useState(false)
 
-  const [{openSnackbar}, dispatch] = useContext(SessionContext) 
+  const [{ openSnackbar }, dispatch] = useContext(SessionContext)
 
   useEffect(() => {
     firebase.isReady()
       .then(result => {
-        console.log(':',result)
+        console.log(':', result)
         setFirebaseIsReady(true)
       })
       .catch(error => console.log(error, "firebase no responde"))
@@ -26,25 +26,30 @@ function App() {
 
   const handleClose = () => {
     dispatch({
-      type : 'OPEN_SNACKBAR',
+      type: 'OPEN_SNACKBAR',
       mensaje: ''
     })
-    openSnackbar.open= false;
-    openSnackbar.mensaje= '';
+    openSnackbar.open = false;
+    openSnackbar.mensaje = '';
   }
-  
+
   return (
     firebaseIsReady ?
       <div className="App">
         <div >
-          <span>{openSnackbar?openSnackbar.mensaje:''}</span>
-          <button onClick = {handleClose}></button>
+          <span>{openSnackbar ? openSnackbar.mensaje : ''}</span>
+          <button onClick={handleClose}></button>
         </div>
         <Router>
           <header>
-            <Link to='/auth/registrar'>Registrar Usuario</Link>
+            <Link to='/auth/registrar'
+              onMouseEnter={() => console.log('enter:true')}
+              onMouseLeave={() => console.log('leave:true')}>Registrar Usuario</Link>
             <Link to='/auth/login'>Login</Link>
-            <Link to='/'>Home</Link>
+            <button
+              to='/'
+              component={Link}>
+              Home</button>
           </header>
           <Route path='/auth/registrar' exact component={RegistrarUsuario}></Route>
           <Route path='/auth/login' exact component={Login}></Route>

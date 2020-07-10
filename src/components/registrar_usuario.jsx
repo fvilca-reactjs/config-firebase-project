@@ -1,27 +1,41 @@
-import React, { useContext } from 'react'
-//import compose from 'recompose/compose';
+import React, {useState, useContext, useEffect } from 'react'
 import { Firebase2 } from '../server/firebase2'
 import { useForm } from 'react-hook-form'
+import { SessionContext } from '../session/store';
+import {crearUsuario} from '../session/sessionActions'
+
 let countRender = 0;
 
 const constraints = {
-    user_mail: { required: true },
-    user_name: { minLength: { value: 8 } }
+    email: { required: true },
+    nombre: { minLength: { value: 4 } }
 }
 
 const messages = {
-    user_mail: 'email is required',
-    user_name: '8 characters max'
+    email: 'email is required',
+    nombre: '4 characters max'
 }
 
 function RegistrarUsuario(props) {
-    // [1] ====>
+    
+    // [state] ====>
     countRender++;
     const firebase = useContext(Firebase2.Context)
+    const [,dispatch] = useContext(SessionContext)
     let { register, handleSubmit, errors } = useForm();
-    //  [2] ====>
-    const onSubmit = (data) => {
-        firebase.auth
+    const [firebaseIsReady, setFirebaseIsReady] = useState(false)
+
+    //  [methods] ====>
+    const onSubmit = async (data) => {
+
+        let response = await crearUsuario(dispatch, firebase, data) 
+        if (response.status) {
+            props.history.push('/') //or UseHistory
+        } else {
+            alert(response.mensaje)
+        }
+
+        /*firebase.auth
             .createUserWithEmailAndPassword(data.user_mail, data.user_password)
             .then(
                 result => {
@@ -35,17 +49,26 @@ function RegistrarUsuario(props) {
                         .catch(error => console.log(error));
                 }
             )
-            .catch()
+           .catch()
+           */
 
     }
+
+    useEffect(() => {
+        firebase.isReady()
+            .then(result => setFirebaseIsReady(result))
+            .catch()
+    }, [])
+
     return (
+        { firebaseIsReady } &&
         <div>
             <h1>Usar react Hook form {countRender}</h1>
             <form onSubmit={handleSubmit(onSubmit)} className='user-form'>
-                <input name='user_name' placeholder='Nombre' ref={register(constraints.user_name)} />{errors.user_name && <span>{messages.user_name}</span>}
-                <input name='user_lastname' placeholder='Apellidos' ref={register} />
-                <input name='user_mail' placeholder='Email' ref={register(constraints.user_mail)} />{errors.user_mail && <span>{messages.user_mail}</span>}
-                <input name='user_password' placeholder='password' ref={register} />
+                <input name='nombre' placeholder='Nombre' ref={register(constraints.nombre)} />{errors.nombre && <span>{messages.nombre}</span>}
+                <input name='apellido' placeholder='Apellidos' ref={register} />
+                <input name='email' placeholder='Email' ref={register(constraints.email)} />{errors.email && <span>{messages.email}</span>}
+                <input name='password' placeholder='password' ref={register} />
                 <br />
                 <button>send </button>
             </form>

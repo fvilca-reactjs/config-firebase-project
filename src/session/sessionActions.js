@@ -18,7 +18,6 @@ export const iniciarSesion = (dispatch, email, password, firebase) => {
                                 autenticado: true
                             });
                             resolve({ status: true })
-                            console.log('TRUE')
                         })
                 })
                 .catch(error => {
@@ -52,14 +51,17 @@ export const crearUsuario = (dispatch, firebase, Usuario) => {
                                 sesion: Usuario,
                                 autenticado: true
                             })
-                            resolve()
+                            resolve({ status: true })
                         }
                         )
                         .catch(
-                            error => console.log(error)
+                            error => resolve({ status: false, mensaje: error })
                         )
                 }
             )
+            .catch(error => {
+                resolve({ status: false, mensaje: error })
+            })
     }
     )
 }
@@ -80,8 +82,8 @@ export const salirSesion = (dispatch, firebase) => {
                             telefono: ''
                         },
                         autenticado: false
-                    }).
-                        resolve()
+                    }),
+                    resolve({status:true})
                 )
         }
     )

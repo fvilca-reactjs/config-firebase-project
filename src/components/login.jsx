@@ -12,18 +12,18 @@ import { openMensajePantalla } from '../session/snackbarAction'
 function Login(props) {
 
     const contextType = useContext(SessionContext);
-    console.log('props:', props)
+    
     // [state] ====>
     //console.log('\t firebase', props.firebase)
-    let { register, handleSubmit } = useForm();
+    let { register, handleSubmit } = useForm(); 
     const [firebaseIsReady, setFirebaseIsReady] = useState(false)
-    let history = useHistory();
+    const history = useHistory();
     let firebase = useContext(Firebase2.Context)
 
     // [methods] ====>
     const onSubmit = async data => {
 
-        const [{ sesion }, dispatch] = contextType;
+        const [ , dispatch] = contextType;
         let  response = await iniciarSesion(dispatch, data.email, data.password, firebase)
         if (response.status) {
             history.push('/')
