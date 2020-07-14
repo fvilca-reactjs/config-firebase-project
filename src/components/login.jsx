@@ -1,32 +1,33 @@
 import React, { useState, useEffect, useContext } from 'react'
 //import compose from 'recompose/compose'
-import { Firebase2 } from '../server/firebase2'
+import { Firebase3 } from '../server/firebase2'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { iniciarSesion } from '../session/sessionActions'
-import { SessionContext } from '../session/store'
+import { StateContext } from '../session/store'
 import { openMensajePantalla } from '../session/snackbarAction'
 
 
 
 function Login(props) {
 
-    const contextType = useContext(SessionContext);
+    const contextType = useContext(StateContext);
     
     // [state] ====>
     //console.log('\t firebase', props.firebase)
     let { register, handleSubmit } = useForm(); 
     const [firebaseIsReady, setFirebaseIsReady] = useState(false)
     const history = useHistory();
-    let firebase = useContext(Firebase2.Context)
+    let firebase = useContext(Firebase3.Context)
 
     // [methods] ====>
     const onSubmit = async data => {
 
-        const [ , dispatch] = contextType;
+        const [ {usuario}, dispatch] = contextType;
+        console.log('usuario:',usuario)
         let  response = await iniciarSesion(dispatch, data.email, data.password, firebase)
         if (response.status) {
-            history.push('/')
+            history.push('/listainmuebles')
         } else {
             openMensajePantalla(dispatch, { open: true, mensaje: response.mensaje })
         }

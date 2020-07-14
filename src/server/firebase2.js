@@ -2,6 +2,8 @@ import { createContext } from 'react'
 import app from '@firebase/app'
 import '@firebase/firestore'
 import '@firebase/auth'
+import '@firebase/storage';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBIUiyIy68c1Xfbg3IuAPMgZJgcBeZXPDU",
@@ -14,14 +16,39 @@ const firebaseConfig = {
     measurementId: "G-8ETCGMNMJG"
 };
 
+
+export class Firebase3 {
+    static Context = createContext();
+    ///static instance;
+    constructor() {
+        if (this.instance) {
+            this.counter++;
+            return this.instance;
+        }
+        this.instance = this;
+        app.initializeApp(firebaseConfig)
+        this.db = app.firestore()
+        this.auth = app.auth()
+        this.storage = app.storage();
+        this.authorization = app.auth;
+    }
+    isReady = () => (new Promise(resolve => {
+        this.auth.onAuthStateChanged(resolve)
+    }))
+}
+
+/*
+
 export class Firebase2 {
     static Context = createContext();
     static counter = 0;
+    static instance;
     constructor() {
         this.instance = null;
         this.app = app.initializeApp(firebaseConfig)
         this.db = app.firestore()
         this.auth = app.auth()
+        //this.counter++;
     }
     static getInstance = () => {
         if (!this.instance) {
@@ -50,3 +77,4 @@ const Firebase1 = {
 
 Object.freeze(Firebase1);
 export default Firebase1;
+*/

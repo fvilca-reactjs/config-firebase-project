@@ -1,6 +1,7 @@
+
 .App {
-  text-align: center;
-  background-color: lightgray;
+  
+  background-color: gray;
 }
 
 .App-header {
@@ -14,9 +15,6 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
 form {
   padding: 2px;
@@ -24,10 +22,10 @@ form {
 
 input {
   padding: 6px;
-  color: grey;
+  color: black;
   background: transparent;
   border: none;
-  border: 1px solid gray;
+  border: 1px solid white;
   border-radius: 5px;
   margin: 2px;
 }
@@ -52,10 +50,19 @@ button {
 }
 
 a {
-  background-color: mediumpurple;
+  background-color: black;
   color: white;
   text-decoration: none;
-  margin: 20px 10px;
   padding: 6px;
-  border: 2px solid white;
+  margin-left: 4px;
+  border: 2px solid gray;
+  &:hover{
+    background-color: grey;
+  }
+  transition: ease-in-out 0.5s;
+}
+
+header {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

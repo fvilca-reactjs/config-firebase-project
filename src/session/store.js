@@ -1,28 +1,11 @@
-import React, {createContext, useContext, useReducer} from 'react'
+import React, { createContext, useContext, useReducer } from 'react';
 
+export const StateContext = createContext();
 
-export const SessionContext = createContext();
-
-export const SessionProvider = ({reducer,initialState, children}) =>(
-    <SessionContext.Provider value={useReducer(reducer,initialState)}>
+export const StateProvider = ({reducer, initialState, children}) => (
+    <StateContext.Provider value = {useReducer(reducer, initialState)}>
         {children}
-    </SessionContext.Provider>
+    </StateContext.Provider>
 )
 
-///export const useStateValue = () => useContext(SessionContext);
-
-/*export class Session {
-    static Context = createContext();
-    static counter = 0;
-    constructor() {
-        this.instance = null;
-    }
-    static getInstance = () => {  
-        if (!this.instance) {
-            this.instance = new Firebase2()
-            this.counter++;
-        }
-        return this.instance
-    }
-    isReady=()=>( new Promise(resolve => this.auth.onAuthStateChanged(resolve)))
-}*/
+export const useStateValue = () => useContext(StateContext);

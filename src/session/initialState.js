@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
     usuario:{
         nombre:'fil',
         mail:'fvilca@gmail.com',

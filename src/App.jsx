@@ -1,60 +1,63 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './App.scss';
 import RegistrarUsuario from './components/registrar_usuario';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import Login from './components/login';
-import { Firebase2 } from './server/firebase2'
-import { SessionContext } from './session/store';
-import useSound from 'use-sound'
-import soundBirds from './sounds/amb_city_birds.mp3'
-import soundBeep from './sounds/ui_a.mp3'
+import { Firebase3 } from './server/firebase2'
+import { useStateValue } from './session/store';
 
-function App() {
+import Navbar from './layout/navbar'
+//import { openMensajePantalla } from './session/snackbarAction';
+import ListaInmuebles from './pages/ListaInmuebles';
 
-  const firebase = useContext(Firebase2.Context);  //instanciando un contexto
-  const [firebaseIsReady, setFirebaseIsReady] = useState(false)
-  const [{ openSnackbar }, dispatch] = useContext(SessionContext)
 
-  const [play1] = useSound(soundBeep)
-  const [play2] = useSound(soundBirds)
+function App(props) {
 
+  // [state] ====>
+  let firebase = useContext(Firebase3.Context);
+  //const [firebaseIsReady, setFirebaseIsReady] = useState(false)
+  const [{ autenticado, usuario }, ] = useStateValue();
+  console.log('autenticado:', autenticado)
+  console.log('usuario:', usuario)
+  
+
+  // =====> Methods
   useEffect(() => {
-    firebase.isReady()
-      .then(result => {
-        console.log(':', result)
-        setFirebaseIsReady(true)
-      })
-      .catch(error => console.log(error, "firebase no responde"))
+    firebase.isReady().then(val => {
+      console.log('firebase:', firebase)
+      console.log('val:', val)
+      //setFirebaseIsReady(val);
+
+    });
+
+
   }, []);
-
-
+  //{sesion.autenticado && firebase.auth.currentUser.displayName, firebase.auth.currentUser.email}
+  /*
+  */
   return (
-    firebaseIsReady ?
-      <div className="App">
-        <div >
-          <span>{openSnackbar ? openSnackbar.mensaje : ''}</span>
-          x
-        </div>
-        <Router>
-          <header>
-            <Link to='/auth/registrar'
-              onMouseEnter={() => { play1() }}
-            >Registrar Usuario</Link>
-            <Link to='/auth/login'
-              onMouseEnter={() => { play1(); }}
-            >Login</Link>
-            <Link
-              to='/'
-            >
-              Home</Link>
-          </header>
-          <Route path='/auth/registrar' exact component={RegistrarUsuario}></Route>
-          <Route path='/auth/login' exact component={Login}></Route>
-          <Route path='/' exact> <div>Home</div></Route>
-        </Router>
-      </div>
-      : 'Esperando firebase'
+
+    <Router>
+      <Switch>
+        {!autenticado &&<Navbar />
+        }
+        <Route path='/auth/registrar' exact component={RegistrarUsuario} />
+        <Route path='/auth/login' exact component={Login} />
+        <Route path='/listainmuebles' exact component={ListaInmuebles} />
+        <Route path='/' exact
+          render={() => (
+            autenticado || firebase.auth.currentUser
+              ? <Redirect to='/listainmuebles' />
+              : <Redirect to='/auth/login' />
+          )} />
+      </Switch>
+    </Router>
   );
 }
 
-export default App;
+export default (App);
+
+/*firebase.db.collection('Users')
+        .doc(firebase.auth.currentUser.uid)
+        .get()
+        .then(doc => { console.log("response:", doc.data()) })*/
