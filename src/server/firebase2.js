@@ -19,7 +19,7 @@ const firebaseConfig = {
 
 export class Firebase3 {
     static Context = createContext();
-    ///static instance;
+    static instance;
     constructor() {
         if (this.instance) {
             this.counter++;

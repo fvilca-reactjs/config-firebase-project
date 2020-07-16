@@ -1,55 +1,51 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './App.scss';
 import RegistrarUsuario from './components/registrar_usuario';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import Login from './components/login';
-import { Firebase3 } from './server/firebase2'
-import { useStateValue } from './session/store';
-
+import { FirebaseContext } from './server/firebase'
+import { StateContext } from './session/store';
 import Navbar from './layout/navbar'
-//import { openMensajePantalla } from './session/snackbarAction';
 import ListaInmuebles from './pages/ListaInmuebles';
+import Perfil from './pages/perfil';
 
-
-function App(props) {
+function App() {
 
   // [state] ====>
-  let firebase = useContext(Firebase3.Context);
-  //const [firebaseIsReady, setFirebaseIsReady] = useState(false)
-  const [{ autenticado, usuario }, ] = useStateValue();
-  console.log('autenticado:', autenticado)
-  console.log('usuario:', usuario)
-  
+  console.log('App:')
+  let firebase = useContext(FirebaseContext);
+  const [{ usuario },] = useContext(StateContext);
+  console.log('\t usuario:', usuario)
 
   // =====> Methods
+  /*
   useEffect(() => {
     firebase.isReady().then(val => {
-      console.log('firebase:', firebase)
-      console.log('val:', val)
+      console.log('\t firebase:', firebase)
+      console.log('\t val:', val)
       //setFirebaseIsReady(val);
-
+      console.log(firebase.auth.currentUser)
     });
 
 
   }, []);
-  //{sesion.autenticado && firebase.auth.currentUser.displayName, firebase.auth.currentUser.email}
-  /*
-  */
+*/
   return (
 
     <Router>
+      <Navbar />
       <Switch>
-        {!autenticado &&<Navbar />
-        }
+        <Route path='/' exact
+          render={(props) => (
+            firebase.auth.currentUser
+              ? <ListaInmuebles {...props} />
+              : <Redirect to='/auth/login/' />
+          )} />
         <Route path='/auth/registrar' exact component={RegistrarUsuario} />
         <Route path='/auth/login' exact component={Login} />
         <Route path='/listainmuebles' exact component={ListaInmuebles} />
-        <Route path='/' exact
-          render={() => (
-            autenticado || firebase.auth.currentUser
-              ? <Redirect to='/listainmuebles' />
-              : <Redirect to='/auth/login' />
-          )} />
+        <Route path='/auth/perfil' exact component={Perfil} />
+
       </Switch>
     </Router>
   );
@@ -57,7 +53,13 @@ function App(props) {
 
 export default (App);
 
+//const [firebaseIsReady, setFirebaseIsReady] = useState(false)
+
 /*firebase.db.collection('Users')
         .doc(firebase.auth.currentUser.uid)
         .get()
         .then(doc => { console.log("response:", doc.data()) })*/
+
+        //{sesion.autenticado && firebase.auth.currentUser.displayName, firebase.auth.currentUser.email}
+/*
+*/

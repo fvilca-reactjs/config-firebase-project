@@ -1,4 +1,4 @@
-//import React, {createContext} from 'react'
+import React, {createContext} from 'react'
 import app from '@firebase/app'
 import '@firebase/firestore'
 import '@firebase/auth'
@@ -14,9 +14,14 @@ const firebaseConfig = {
     measurementId: "G-8ETCGMNMJG"
   };
 
+  export const  FirebaseContext = createContext();
+
 export  class  Firebase {
     constructor(){
-        app.initializeApp(firebaseConfig)
+        if (!app.apps.length) {
+            app.initializeApp(firebaseConfig);
+          }
+        //app.initializeApp(firebaseConfig)
         this.db = app.firestore();
         this.auth = app.auth();
     }

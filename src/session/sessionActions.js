@@ -10,10 +10,10 @@ export const iniciarSesion = (dispatch, email, password, firebase) => {
                         .doc(auth.user.uid)
                         .get()
                         .then(doc => {
-
                             const usuarioDB = doc.data();
+                            console.log('UsuarioDB:',usuarioDB);
                             dispatch({
-                                type: 'INICIAR_SESSION',
+                                type: "INICIAR_SESION",
                                 sesion: usuarioDB,
                                 autenticado: true
                             });
@@ -41,7 +41,9 @@ export const crearUsuario = (dispatch, firebase, Usuario) => {
                             id: auth.user.uid,
                             email: Usuario.email,
                             nombre: Usuario.nombre,
-                            apellido: Usuario.apellido
+                            apellido: Usuario.apellido,
+                            telefono: '',
+                            foto: '',
                         }, { merge: true }
                         )
                         .then(doc => {

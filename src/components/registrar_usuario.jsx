@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Firebase3 } from '../server/firebase2'
+import { FirebaseContext } from '../server/firebase'
 import { useForm } from 'react-hook-form'
 import { StateContext } from '../session/store';
 import { crearUsuario } from '../session/sessionActions'
@@ -20,10 +20,11 @@ function RegistrarUsuario(props) {
 
     // [state] ====>
     countRender++;
-    const firebase = useContext(Firebase3.Context)
-    const [{ sesion }, dispatch] = useContext(StateContext)
+    const firebase = useContext(FirebaseContext)
+    const [,dispatch] = useContext(StateContext);
+    
     let { register, handleSubmit, errors } = useForm();
-    const [firebaseIsReady, setFirebaseIsReady] = useState(false)
+    //const [firebaseIsReady, setFirebaseIsReady] = useState(false)
 
     //  [methods] ====>
     const onSubmit = async (data) => {
@@ -54,16 +55,16 @@ function RegistrarUsuario(props) {
 
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         firebase.isReady()
             .then(result =>{ 
                 setFirebaseIsReady(result) 
                 console.log('ready:',firebaseIsReady)} )
         .catch()
-}, [])
+}, [])*/
 
 return (
-    { firebaseIsReady } &&
+    { /*firebaseIsReady*/ } &&
     <div>
         <h1>Usar react Hook form {countRender}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className='user-form'>

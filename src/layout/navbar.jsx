@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { Firebase3 } from '../server/firebase2'
+import { FirebaseContext } from '../server/firebase'
 import { salirSesion } from '../session/sessionActions'
-import { useStateValue } from '../session/store';
+import { StateContext } from '../session/store';
 import { Link, withRouter } from 'react-router-dom'
 
 import useSound from 'use-sound'
@@ -10,8 +10,8 @@ import soundBeep from '../sounds/ui_a.mp3'
 
 function Navbar(props) {
 
-    let firebase = useContext(Firebase3.Context);
-    const [, dispatch] = useStateValue();
+    let firebase = useContext(FirebaseContext);
+    const [, dispatch] = useContext(StateContext);
     const [play1] = useSound(soundBeep, { volume: 0.2 }) //soundBirds
 
     const handleLogOut = () => {
@@ -25,6 +25,7 @@ function Navbar(props) {
                 <Link to='/auth/registrar' onMouseEnter={() => { play1() }}>Registrar Usuario</Link>
                 <Link to='/auth/login' onMouseEnter={() => { play1(); }}>Login</Link>
                 <Link to='/'>Home</Link>
+                <Link to='/auth/perfil'  onMouseEnter={() => { play1(); }}>Perfil</Link>
                 <button onClick={handleLogOut}>Log out</button>
             </header>
         </div>

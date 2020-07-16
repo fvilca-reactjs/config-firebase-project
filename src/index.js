@@ -1,23 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import { Firebase3 } from './server/firebase2'
-import { StateProvider } from './session/store';
-import {initialState} from './session/initialState';
-import { mainReducer } from './session'
 import './index.css';
 
-
-const firebase = new Firebase3();
-
+import React,{useReducer} from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import { Firebase, FirebaseContext } from './server/firebase'
+import { StateContext } from './session/store';
+import {initialState} from './session/initialState';
+import sesionReducer from './session/sesionReducer';
 
 export const Index = () => {
   return (
-    <Firebase3.Context.Provider value={firebase} >
-      <StateProvider initialState={initialState} reducer={mainReducer}>
+    <FirebaseContext.Provider value={new Firebase()} >
+      <StateContext.Provider value={useReducer(sesionReducer, initialState)} >
       <App />
-    </StateProvider >
-    </Firebase3.Context.Provider >
+    </StateContext.Provider>
+    </FirebaseContext.Provider >
   )
 }
 
@@ -26,7 +23,7 @@ ReactDOM.render(
   , document.getElementById('root')
 );
 
-/*
+/*  
  ReactDOM.render(
   <SessionProvider initialState={{}} reducer={mainReducer}>
     <Firebase3.Context.Provider value={new Firebase3()} >

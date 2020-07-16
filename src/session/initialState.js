@@ -1,9 +1,16 @@
+export const initialState = {}
+
+
+/*
 export const initialState = {
-    usuario:{
-        nombre:'fil',
-        mail:'fvilca@gmail.com',
-        telefono:'951266710',
-        foto:'',
+    usuario: {
+      nombre: 'a',
+      apellido: '',
+      email: '',
+      telefono: '',
+      foto: '',
+      id: ''
     },
     autenticado: false
-}
+  }
+  */
